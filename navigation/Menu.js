@@ -34,7 +34,7 @@ function CustomDrawerContent({
         >
           <Block style={styles.profile}>
             <Image source={{ uri: profile.avatar }} style={styles.avatar} />
-            <Text h5 color={"white"}>
+            <Text h5 color={"black"}>
               {profile.name}
             </Text>
           </Block>
@@ -77,7 +77,7 @@ function CustomDrawerContent({
           })}
         </ScrollView>
       </Block>
-      <Block flex={0.3} style={{ paddingLeft: 7, paddingRight: 14 }}>
+      {/* <Block flex={0.3} style={{ paddingLeft: 7, paddingRight: 14 }}>
         <DrawerCustomItem
           title="Sign In"
           navigation={navigation}
@@ -88,7 +88,7 @@ function CustomDrawerContent({
           navigation={navigation}
           focused={state.index === 9 ? true : false}
         />
-      </Block>
+      </Block> */}
     </Block>
   );
 }
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#4B1958',
+    backgroundColor: '#514c4c',
     paddingHorizontal: 28,
     paddingBottom: theme.SIZES.BASE,
     paddingTop: theme.SIZES.BASE * 2,

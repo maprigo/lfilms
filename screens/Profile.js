@@ -1,26 +1,68 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, FlatList , TouchableOpacity} from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { Icon } from '../components';
+import { Icon, Header } from '../components';
 import { Images, materialTheme } from '../constants';
 import { HeaderHeight } from "../constants/utils";
 
 const { width, height } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
 
+function Item({ id, title, selected, onSelect }) {
+  return (
+    <TouchableOpacity
+      onPress={() => onSelect(id)}
+      style={[
+        styles.item,
+        { backgroundColor: selected ? '#6e3b6e' : '#f9c2ff' },
+      ]}
+    >
+      <Text style={styles.title}>{title}</Text>
+    </TouchableOpacity>
+  );
+}
+
 export default class Profile extends React.Component {
-  componentDidMount = () => {
-    fetch('https://jsonplaceholder.typicode.com/users')
+
+  state={
+    users : [{ email : 'mike@mike.com' }],
+    films : [],
+    
+  }
+
+  
+
+  
+  componentDidMount = async () => {
+    await fetch('https://movie-ranker-backend.herokuapp.com/user',{ method :'get' , headers : new Headers ({
+      'Authorization': 'Basic YWRtaW46QURNSU4='
+    })})
     .then ((response) => response.json())
     .then ((responseJson) => {
-      console.log(response.json);
+      console.log(responseJson);
+      this.setState({users: responseJson});
+      console.log(this.state.users);
     })
     .catch((error) => {
       console.error(error);
     });
-  }
+
+    await fetch('https://movie-ranker-backend.herokuapp.com/user',{ method :'get' , headers : new Headers ({
+      'Authorization': 'Basic YWRtaW46QURNSU4='
+    })})
+    .then ((response) => response.json())
+    .then ((responseJson2) => {
+      console.log(responseJson2);
+      this.setState({films: responseJson2});
+      console.log(this.state.films);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  } 
+
   render() {
     return (
       <Block flex style={styles.profile}>
@@ -31,16 +73,20 @@ export default class Profile extends React.Component {
             imageStyle={styles.profileImage}>
             <Block flex style={styles.profileDetails}>
               <Block style={styles.profileTexts}>
-                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Rachel Brown</Text>
+                <Text color="white" size={28} style={{ paddingBottom: 8 }}>{this.state.users[0].firstName + " " +   this.state.users[0].lastName}</Text>
                 <Block row space="between">
                   <Block row>
-                    <Block middle style={styles.pro}>
-                      <Text size={16} color="white">Pro</Text>
+                    <Block middle style={styles.LABEL}>
+                      <Text size={16} color="white">{this.state.users[0].favoriteGenre}</Text>
                     </Block>
-                    <Text color="white" size={16} muted style={styles.seller}>Seller</Text>
-                    <Text size={16} color={materialTheme.COLORS.WARNING}>
-                      4.8 <Icon name="shape-star" family="GalioExtra" size={14} />
-                    </Text>
+                    <Text color="white" size={16} muted style={styles.seller}>{this.state.users[0].email}</Text>
+                    <FlatList
+                      data={this.state.films}
+                      renderItem={({item} ) => (
+                        <Text color="white">{item.email}</Text>
+                      )}
+                      keyExtractor={({ key }) => key}
+                      />
                   </Block>
                   <Block>
                     <Text color={theme.COLORS.MUTED} size={16}>
@@ -74,6 +120,11 @@ export default class Profile extends React.Component {
               <Text size={16}>Recently viewed</Text>
               <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>View All</Text>
             </Block>
+            {/* <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+            {items.map(item => (
+              <Text size={16}>{item.name}</Text>
+              ))}
+              </Block> */}
             <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
               <Block row space="between" style={{ flexWrap: 'wrap' }} >
                 {Images.Viewed.map((img, imgIndex) => (

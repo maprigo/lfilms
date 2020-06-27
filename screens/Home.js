@@ -32,15 +32,15 @@ export default class Home extends React.Component {
         <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Pro')}>
           <Block row middle>
             <Icon name="grid" family="feather" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Categories</Text>
+            <Text size={16} style={styles.tabTitle}>Mis Listas</Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
+        {/* <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
           <Block row middle>
             <Icon size={16} name="camera-18" family="GalioExtra" style={{ paddingRight: 8 }} />
             <Text size={16} style={styles.tabTitle}>Best Deals</Text>
           </Block>
-        </Button>
+        </Button> */}
       </Block>
     )
   }
@@ -53,7 +53,7 @@ export default class Home extends React.Component {
         <Block flex>
           <Product product={products[0]} horizontal />
           <Block flex row>
-            <Product product={products[1]} style={{ marginRight: theme.SIZES.BASE }} />
+            <Product product={products[2]} style={{ marginRight: theme.SIZES.BASE }} />
             <Product product={products[2]} />
           </Block>
           <Product product={products[3]} horizontal />

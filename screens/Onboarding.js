@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
-import { Block, Button, Text, theme } from 'galio-framework';
+import { Block, Button, Text, theme ,Input } from 'galio-framework';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -24,22 +24,35 @@ export default class Onboarding extends React.Component {
           <Block flex space="around" style={{ zIndex: 2 }}>
             <Block>
               <Block>
-                <Text color="white" size={60}>Material</Text>
+                <Text color="white" size={60}>Rockeando</Text>
               </Block>
               <Block row>
-                <Text color="white" size={60}>Kit</Text>
+                <Text color="white" size={60}>Pelis</Text>
               </Block>
-              <Text size={16} color='rgba(255,255,255,0.6)'>
-                Fully coded React Native components.
+              <Text size={26} color='rgb(220, 0, 78)' >
+                Tu app de Pelis Favorita
               </Text>
             </Block>
             <Block center>
+            <Input
+                right
+                color="black"
+                style={styles.search}
+                placeholder="User"
+              />
+              <Input
+                right
+                color="black"
+                style={styles.Text}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
               <Button
                 shadowless
                 style={styles.button}
-                color={materialTheme.COLORS.BUTTON_COLOR}
+                color='rgb(220, 0, 78)'
                 onPress={() => navigation.navigate('App')}>
-                GET STARTED
+                Log In
               </Button>
             </Block>
           </Block>
