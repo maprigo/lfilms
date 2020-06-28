@@ -26,6 +26,12 @@ import Screens from './navigation/Screens';
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
+import reducers from './reducers/index';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+const store = createStore(reducers)
+
 // cache app images
 const assetImages = [
   Images.Pro,
@@ -67,7 +73,9 @@ export default class App extends React.Component {
           <GalioProvider theme={materialTheme}>
             <Block flex>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <Screens />
+              <Provider store={store}>
+                <Screens />
+              </Provider>
             </Block>
           </GalioProvider>
         </NavigationContainer>

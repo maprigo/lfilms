@@ -15,7 +15,7 @@ const logueo = async (user,passwd) => {
             .then((responseJson) => {
                 // console.log(responseJson.result);
                 // this.setState({  });
-                console.log(this.state.users);
+                // console.log(this.state.users);
                 return {
                     users: responseJson
                 }
@@ -33,7 +33,7 @@ function app(state, action) {
     switch (action.type) {
         case LOGUEAR:
             const {
-                user ,passwd
+                user,passwd
             } = action.payload;
             
             const usuario = logueo(user,passwd),
@@ -50,3 +50,5 @@ function app(state, action) {
             break;
     }
 }
+
+export default app;
