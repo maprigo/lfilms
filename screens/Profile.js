@@ -28,8 +28,7 @@ export default class Profile extends React.Component {
 
   state={
     users : [{ email : 'mike@mike.com' }],
-    films : [],
-    
+    films : [], 
   }
 
   
@@ -41,7 +40,7 @@ export default class Profile extends React.Component {
     })})
     .then ((response) => response.json())
     .then ((responseJson) => {
-      console.log(responseJson);
+      // console.log(responseJson.result);
       this.setState({users: responseJson});
       console.log(this.state.users);
     })
@@ -49,14 +48,13 @@ export default class Profile extends React.Component {
       console.error(error);
     });
 
-    await fetch('https://movie-ranker-backend.herokuapp.com/user',{ method :'get' , headers : new Headers ({
+    await fetch('https://movie-ranker-backend.herokuapp.com/movies/search',{ method :'get' , headers : new Headers ({
       'Authorization': 'Basic YWRtaW46QURNSU4='
     })})
     .then ((response) => response.json())
     .then ((responseJson2) => {
-      console.log(responseJson2);
       this.setState({films: responseJson2});
-      console.log(this.state.films);
+      // console.log(this.state.films);
     })
     .catch((error) => {
       console.error(error);
@@ -81,9 +79,9 @@ export default class Profile extends React.Component {
                     </Block>
                     <Text color="white" size={16} muted style={styles.seller}>{this.state.users[0].email}</Text>
                     <FlatList
-                      data={this.state.films}
-                      renderItem={({item} ) => (
-                        <Text color="white">{item.email}</Text>
+                      data={this.state.films.result}
+                      renderItem={({film} ) => (
+                        <Text color="white">{film}</Text>
                       )}
                       keyExtractor={({ key }) => key}
                       />
