@@ -9,18 +9,16 @@ const { height, width } = Dimensions.get('screen');
 import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 
-export default class Onboarding extends React.Component {
-  state = {
-    user:'',
-    pass:''
-  }
+const { useState } = React
 
+export default class Onboarding extends React.Component {
   render() {
     const { navigation } = this.props;
-
+    const [usuario, setUsuario] = useState('');
+    const [password, setPassword] = useState('');
     const dispatch = useDispatch();
 
-    const logueado = useSelector(state => state.logueado)
+    // const logueado = useSelector(state => state.logueado)
 
     return (
       <Block flex style={styles.container}>
@@ -50,7 +48,7 @@ export default class Onboarding extends React.Component {
                 color="black"
                 style={styles.search}
                 placeholder="User"
-                onChange={this._handleChangeUser}
+                onChange={e => setUsuario(e.target.value)}
               />
               <Input
                 right
@@ -58,7 +56,7 @@ export default class Onboarding extends React.Component {
                 style={styles.Text}
                 placeholder="Password"
                 secureTextEntry={true}
-                onChange={this._handleChangePass}
+                onChange={e => setPassword(e.target.value)}
               />
               <Button
                 shadowless
@@ -66,7 +64,7 @@ export default class Onboarding extends React.Component {
                 color='rgb(220, 0, 78)'
                 // onPress={() => navigation.navigate('App')}
                 onPress = {() => {
-                  dispatch(loguear(this.state.user,this.state.pass))
+                  dispatch(loguear(usuario,password))
                 }}
                 >
                 Log In
@@ -77,15 +75,6 @@ export default class Onboarding extends React.Component {
       </Block>
     );
   }
-
-  _handleChangeUser = txt => {
-    this.setState({user:txt})
-  }
-
-  _handleChangePass = txt => {
-    this.setState({pass:txt})
-  }
-
 }
 
 const styles = StyleSheet.create({

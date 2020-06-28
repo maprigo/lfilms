@@ -69,16 +69,16 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <NavigationContainer>
-          <GalioProvider theme={materialTheme}>
-            <Block flex>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <Provider store={store}>
-                <Screens />
-              </Provider>
-            </Block>
-          </GalioProvider>
-        </NavigationContainer>
+        <Provider store={store}>
+          <NavigationContainer>
+            <GalioProvider theme={materialTheme}>
+              <Block flex>
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                  <Screens />
+              </Block>
+            </GalioProvider>
+          </NavigationContainer>
+        </Provider>
       );
     }
   }
