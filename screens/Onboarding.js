@@ -9,14 +9,21 @@ const { height, width } = Dimensions.get('screen');
 import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 
-const { useState } = React
-
 export default class Onboarding extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user:'',
+      pass:''      
+    };
+  }
+
+  setUsuario = txt => this.setState({user:txt})
+  setPassword = txt => this.setState({pass:txt})
+
   render() {
-    const { navigation } = this.props;
-    const [usuario, setUsuario] = useState('');
-    const [password, setPassword] = useState('');
-    const dispatch = useDispatch();
+    const { navigation } = this.props;    
+    // const dispatch = useDispatch();
 
     // const logueado = useSelector(state => state.logueado)
 
@@ -62,10 +69,10 @@ export default class Onboarding extends React.Component {
                 shadowless
                 style={styles.button}
                 color='rgb(220, 0, 78)'
-                // onPress={() => navigation.navigate('App')}
-                onPress = {() => {
-                  dispatch(loguear(usuario,password))
-                }}
+                onPress={() => navigation.navigate('App')}
+/*                 onPress = {() => {
+                  dispatch(loguear(this.state.user,this.state.pass))
+                }} */
                 >
                 Log In
               </Button>
