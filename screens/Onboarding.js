@@ -9,6 +9,7 @@ const { height, width } = Dimensions.get('screen');
 import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 
+
 export default class Onboarding extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,26 @@ export default class Onboarding extends React.Component {
 
   setUsuario = txt => this.setState({user:txt})
   setPassword = txt => this.setState({pass:txt})
+
+  logueo = async (user,passwd) => {
+    return await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}/${passwd}`, {
+                method: 'get', headers: new Headers({
+                    'Authorization': 'Basic YWRtaW46QURNSU4='
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.result);
+                // this.setState({  });
+                // console.log(this.state.users);
+                return {
+                    users: responseJson
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
 
   render() {
     const { navigation } = this.props;    
@@ -55,7 +76,7 @@ export default class Onboarding extends React.Component {
                 color="black"
                 style={styles.search}
                 placeholder="User"
-                onChange={e => setUsuario(e.target.value)}
+                onChange={e => this.setUsuario(e.target.value)}
               />
               <Input
                 right
@@ -63,14 +84,21 @@ export default class Onboarding extends React.Component {
                 style={styles.Text}
                 placeholder="Password"
                 secureTextEntry={true}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => this.setPassword(e.target.value)}
               />
               <Button
                 shadowless
                 style={styles.button}
                 color='rgb(220, 0, 78)'
-                onPress={() => navigation.navigate('App')}
-/*                 onPress = {() => {
+                onPress={() => {
+                  const usuario = this.logueo(this.state.user,this.state.pass)
+
+                  console.dir(usuario);
+                  navigation.navigate('App',{
+                    usuario
+                  })
+                }}
+                /* onPress = {() => {
                   dispatch(loguear(this.state.user,this.state.pass))
                 }} */
                 >

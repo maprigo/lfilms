@@ -119,6 +119,8 @@ function HomeStack(props) {
 }
 
 function AppStack(props) {
+  console.dir(props.usuario);
+
   return (
     <Drawer.Navigator
       style={{ flex: 1 }}
