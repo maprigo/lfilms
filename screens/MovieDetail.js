@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform } from 'react-native';
-import { Block, Text, theme, Button } from 'galio-framework';
+import { Block, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Icon } from '../components';
@@ -10,10 +10,39 @@ import { HeaderHeight } from "../constants/utils";
 const { width, height } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
 
-export default class Profile extends React.Component {
+function Item({ item }) {
+    return (
+        <TouchableOpacity >
+            <Text>{item.message}</Text>
+        </TouchableOpacity>
+    );
+}
+
+class MovieDetail extends React.Component {
+
+    state = {
+        comments: null,
+    }
+
+    componentDidMount = async () => {
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/movie/${this.props.route.params.movie.id}/rating`, {
+            method: 'get',
+            headers: new Headers({
+                'Authorization': 'Basic YWRtaW46QURNSU4='
+            })
+        })
+
+        if (response.status === 200) {
+            const comments = await response.json()
+            this.setState({ comments: comments });
+            return comments
+        }
+    }
+
+
     render() {
         const { movie } = this.props.route.params
-        console.log(this.props)
+        console.log(this.state.comments)
         return (
             <Block flex style={styles.profile}>
                 <Block flex>
@@ -35,7 +64,6 @@ export default class Profile extends React.Component {
                                         </Text>
                                     </Block>
                                     <Block>
-                                        <Button> Votar </Button>
                                     </Block>
                                 </Block>
                             </Block>
@@ -60,16 +88,34 @@ export default class Profile extends React.Component {
                             </Block>
                         </Block>
                         <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+                            <Text size={28}>About:</Text>
+                        </Block>
+                        <Block>
                             <Text size={16}>{movie.overview}</Text>
-                            <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>View All</Text>
                         </Block>
 
+                        <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+                            <Block row space="between" style={{ flexWrap: 'wrap' }} >
+                                {this.state.comments &&
+                                    this.state.comments.map((item, imgIndex) => (
+                                        <Item
+                                            item={item.message}
+                                            index={imgIndex}
+                                            style={styles.thumb}
+                                        />
+                                    ))
+                                }
+                            </Block>
+
+                        </Block>
                     </ScrollView>
                 </Block>
             </Block>
         );
     }
 }
+
+export default MovieDetail
 
 const styles = StyleSheet.create({
     profile: {
