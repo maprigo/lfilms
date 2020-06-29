@@ -19,11 +19,11 @@ export default class Home extends React.Component {
         style={styles.search}
         iconContent={iconCamera}
         placeholder="What are you looking for?"
-        onFocus={() => navigation.navigate('Pro')}
+      // onFocus={() => navigation.navigate('Pro')}
       />
     )
   }
-  
+
   renderTabs = () => {
     const { navigation } = this.props;
 
@@ -74,7 +74,7 @@ export default class Home extends React.Component {
 
 const styles = StyleSheet.create({
   home: {
-    width: width,    
+    width: width,
   },
   search: {
     height: 48,

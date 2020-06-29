@@ -8,12 +8,11 @@ import { Block, Text, theme } from "galio-framework";
 import ComponentsScreen from '../screens/Components';
 import HomeScreen from '../screens/Home';
 import OnboardingScreen from '../screens/Onboarding';
-import ProfileScreen from '../screens/Profile';
+import MoviesScreen from '../screens/Movies';
+import MovieDetailScreen from '../screens/MovieDetail';
 import ProScreen from '../screens/Pro';
 import SettingsScreen from '../screens/Settings';
 
-// redux imports
-import { connect } from 'react-redux';
 
 import CustomDrawerContent from './Menu';
 import { Icon, Header } from '../components';
@@ -24,24 +23,37 @@ const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const profile = {
-  avatar: Images.Profile,
-  name: "Tito Fuentes",
 
-};
 
-function ProfileStack(props) {
+
+function MoviesStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
+    <Stack.Navigator initialRouteName="MoviesList" mode="card" headerMode="screen">
       <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="MoviesList"
+        component={MoviesScreen}
         options={{
           header: ({ navigation, scene }) => (
             <Header
               white
               transparent
-              title="Profile"
+              title="Movies"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="MovieDetail"
+        component={MovieDetailScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              white
+              transparent
+              title="Movie Detail"
               scene={scene}
               navigation={navigation}
             />
@@ -93,14 +105,14 @@ function HomeStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
-        name="Home"
+        name="Browse"
         component={HomeScreen}
         options={{
           header: ({ navigation, scene }) => (
             <Header
               search
               tabs
-              title="Home"
+              title="Browse"
               navigation={navigation}
               scene={scene}
             />
@@ -123,13 +135,12 @@ function HomeStack(props) {
 
 function AppStack(props) {
   console.dir(props.usuario);
-  console.log(prop.user);
 
   return (
     <Drawer.Navigator
       style={{ flex: 1 }}
       drawerContent={props => (
-        <CustomDrawerContent {...props} profile={profile} />
+        <CustomDrawerContent {...props} />
       )}
       drawerStyle={{
         backgroundColor: "white",
@@ -228,8 +239,8 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
-        name="Profile"
-        component={ProfileStack}
+        name="Movies"
+        component={MoviesStack}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon
@@ -302,11 +313,6 @@ function AppStack(props) {
     </Drawer.Navigator>
   );
 }
-const mapStateToProps = state => ({
-  user: state.user,
-});
-
-connect(mapStateToProps)(AppStack)
 
 function OnboardingStack(props) {
 

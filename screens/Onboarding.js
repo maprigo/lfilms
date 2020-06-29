@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { saveUser } from '../actions/user';
 import { bindActionCreators } from 'redux';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 const { height, width } = Dimensions.get('screen');
 
 import Images from '../constants/Images';
@@ -15,12 +17,32 @@ class Onboarding extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      pass: ''
+      user: 'adri@adi.com',
+      pass: '1234'
     };
   }
 
+  componentDidMount = async () => {
+    try {
+      const { navigation, saveUser } = this.props;
+      const userStorage = await AsyncStorage.getItem('@user')
+      if (userStorage) {
+        saveUser(JSON.parse(userStorage))
+        navigation.navigate('App', {
+          user: JSON.parse(userStorage)
+        })
+      }
+    } catch (error) {
+      console.warn("There is an error reading storage", new Date(), error.message)
+      return []
+    }
+  }
   logueo = async (user, password) => {
+    if (!user) {
+      throw new Error("User is needed")
+    }
+
+
     const response = await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}`, {
       method: 'get',
       headers: new Headers({
@@ -36,14 +58,16 @@ class Onboarding extends React.Component {
 
   handleOnPress = async () => {
     try {
-      const { navigation, actions } = this.props;
-      const usuario = await this.logueo(this.state.user, this.state.pass)
-      actions.saveUser(usuario)
+      const { navigation, saveUser } = this.props;
+      const { user, pass } = this.state;
+      const userData = await this.logueo(user, pass)
+      saveUser(userData)
+      await AsyncStorage.setItem('@user', JSON.stringify(userData))
       navigation.navigate('App', {
-        usuario
+        user: userData
       })
     } catch (error) {
-      console.warn("There is an error on logueo", new Date(), error.message)
+      console.warn("There is an error on HandleOnPress", new Date(), error.message)
       return []
     }
   }
@@ -126,13 +150,8 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 
-const ActionCreators = Object.assign(
-  {},
-  saveUser,
-);
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(ActionCreators, dispatch),
-});
+mapDispatchToProps = (dispatch) => ({
+  saveUser: (user) => dispatch(saveUser(user))
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding)

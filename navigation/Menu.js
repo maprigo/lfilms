@@ -3,14 +3,21 @@ import { TouchableWithoutFeedback, ScrollView, StyleSheet, Image } from "react-n
 import { Block, Text, theme } from "galio-framework";
 import { useSafeArea } from "react-native-safe-area-context";
 
+// redux imports
+import { connect } from 'react-redux';
+
 import { Icon, Drawer as DrawerCustomItem } from '../components/';
 import { Images, materialTheme } from "../constants/";
 
+const profile = {
+  avatar: Images.Profile,
+
+};
 
 function CustomDrawerContent({
   drawerPosition,
   navigation,
-  profile,
+  user,
   focused,
   state,
   ...rest
@@ -20,7 +27,7 @@ function CustomDrawerContent({
     "Home",
     "Browse",
     "List",
-    "Profile",
+    "Movies",
     "Settings",
   ];
   return (
@@ -30,13 +37,15 @@ function CustomDrawerContent({
     >
       <Block flex={0.25} style={styles.header}>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("Movies")}
         >
           <Block style={styles.profile}>
             <Image source={{ uri: profile.avatar }} style={styles.avatar} />
-            <Text h5 color={"black"}>
-              {profile.name}
-            </Text>
+            {user &&
+              <Text h5 color={"black"}>
+                {`${user.firstName} ${user.lastName}`}
+              </Text>
+            }
           </Block>
         </TouchableWithoutFeedback>
         <Block row>
@@ -77,18 +86,6 @@ function CustomDrawerContent({
           })}
         </ScrollView>
       </Block>
-      {/* <Block flex={0.3} style={{ paddingLeft: 7, paddingRight: 14 }}>
-        <DrawerCustomItem
-          title="Sign In"
-          navigation={navigation}
-          focused={state.index === 8 ? true : false}
-        />
-        <DrawerCustomItem
-          title="Sign Up"
-          navigation={navigation}
-          focused={state.index === 9 ? true : false}
-        />
-      </Block> */}
     </Block>
   );
 }
@@ -131,4 +128,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomDrawerContent;
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+
+export default connect(mapStateToProps)(CustomDrawerContent)
+
+
