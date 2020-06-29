@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import React, { isValidElement } from 'react';
+import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, TouchableOpacity } from 'react-native';
+import { Block, Text, theme, Input, Button } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Icon } from '../components';
@@ -12,9 +12,10 @@ const thumbMeasure = (width - 48 - 32) / 3;
 
 function Item({ item }) {
     return (
-        <TouchableOpacity >
-            <Text>{item.message}</Text>
-        </TouchableOpacity>
+        <Block>
+            <Text size={16}>{item.message}</Text>
+            <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>{item.userId} rated : {item.rating}</Text>
+        </Block>
     );
 }
 
@@ -22,6 +23,8 @@ class MovieDetail extends React.Component {
 
     state = {
         comments: null,
+        comment: null,
+        rate: null,
     }
 
     componentDidMount = async () => {
@@ -34,15 +37,44 @@ class MovieDetail extends React.Component {
 
         if (response.status === 200) {
             const comments = await response.json()
-            this.setState({ comments: comments });
+            this.setState({ comments: comments.comments });
             return comments
+        }
+    }
+
+    SaveComment = async (comment, rate) => {
+
+
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}`, {
+            method: 'get',
+            headers: new Headers({
+                'Authorization': 'Basic YWRtaW46QURNSU4='
+            })
+        })
+
+        console.log("Response Save Comment:", response)
+
+        if (response.status === 200) {
+            const responseJson = await response.json()
+            return responseJson
+        }
+    }
+
+    handleOnPress = async () => {
+        try {
+            const { navigation } = this.props;
+            const { comment, rate } = this.state;
+            const userData = await this.SaveComment(comment, rate)
+        } catch (error) {
+            console.warn("There is an error on HandleOnPress Comment", new Date(), error.message)
+            return []
         }
     }
 
 
     render() {
         const { movie } = this.props.route.params
-        console.log(this.state.comments)
+        // console.log(this.state.comments)
         return (
             <Block flex style={styles.profile}>
                 <Block flex>
@@ -55,10 +87,7 @@ class MovieDetail extends React.Component {
                                 <Text color="white" size={28} style={{ paddingBottom: 8 }}>{movie.title}</Text>
                                 <Block row space="between">
                                     <Block row>
-                                        <Block middle style={styles.pro}>
-                                            <Text size={16} color="white">Pro</Text>
-                                        </Block>
-                                        <Text color="white" size={16} muted style={styles.seller}>Vote Average</Text>
+                                        <Text color="white" size={16} muted style={styles.seller}>Vote Averages</Text>
                                         <Text size={16} color={materialTheme.COLORS.WARNING}>
                                             {movie.vote_average}<Icon name="shape-star" family="GalioExtra" size={14} />
                                         </Text>
@@ -72,41 +101,72 @@ class MovieDetail extends React.Component {
                     </ImageBackground>
                 </Block>
                 <Block flex style={styles.options}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
-                            <Block middle>
-                                <Text bold size={12} style={{ marginBottom: 8 }}>{movie.popularity}</Text>
-                                <Text muted size={12}>Views</Text>
-                            </Block>
-                            {/* <Block middle>
-                                <Text bold size={12} style={{ marginBottom: 8 }}></Text>
-                                <Text muted size={12}>Bids & Offers</Text>
-                            </Block> */}
-                            <Block >
-                                <Text bold size={12} style={{ marginBottom: 8 }}>{movie.original_language}</Text>
-                                <Text muted size={12}>Language</Text>
-                            </Block>
+
+                    <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                        <Block middle>
+                            <Text bold size={12} style={{ marginBottom: 8 }}>{movie.popularity}</Text>
+                            <Text muted size={12}>Views</Text>
                         </Block>
+                        <Block >
+                            <Text bold size={12} style={{ marginBottom: 8 }}>{movie.original_language}</Text>
+                            <Text muted size={12}>Language</Text>
+                        </Block>
+                    </Block>
+                    <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+                        <Text size={28}>About:</Text>
+                    </Block>
+                    <Block>
+                        <Text size={16}>{movie.overview}</Text>
+                    </Block>
+                    <ScrollView showsVerticalScrollIndicator={true}>
                         <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
-                            <Text size={28}>About:</Text>
+                            <Text size={28}>Comments:</Text>
+                            <Block>
+                                <Block >
+                                    {this.state.comments &&
+                                        this.state.comments.map((item, imgIndex) => (
+                                            <Item
+                                                item={item}
+                                                index={imgIndex}
+                                                style={styles.thumb}
+                                            />
+                                        ))
+                                    }
+                                </Block>
+                            </Block>
+
                         </Block>
+
                         <Block>
-                            <Text size={16}>{movie.overview}</Text>
+                            <Text>Left Your Comment:</Text>
                         </Block>
-
-                        <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
-                            <Block row space="between" style={{ flexWrap: 'wrap' }} >
-                                {this.state.comments &&
-                                    this.state.comments.map((item, imgIndex) => (
-                                        <Item
-                                            item={item.message}
-                                            index={imgIndex}
-                                            style={styles.thumb}
-                                        />
-                                    ))
-                                }
-                            </Block>
-
+                        <Block center>
+                            <Input
+                                right
+                                color="black"
+                                style={styles.text}
+                                placeholder="Comment"
+                                onChange={e => {
+                                    this.setState({ comment: e.nativeEvent.text })
+                                }}
+                            />
+                            <Input
+                                right
+                                color="black"
+                                style={styles.text}
+                                placeholder="Rate"
+                                onChange={e => {
+                                    this.setState({ rate: e.nativeEvent.text })
+                                }}
+                            />
+                            <Button
+                                shadowless
+                                style={styles.button}
+                                color='rgb(220, 0, 78)'
+                                onPress={this.handleOnPress}
+                            >
+                                Log In
+                            </Button>
                         </Block>
                     </ScrollView>
                 </Block>
