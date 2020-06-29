@@ -1,59 +1,60 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, StatusBar, Dimensions, Platform } from 'react-native';
-import { Block, Button, Text, theme ,Input } from 'galio-framework';
-import { useDispatch,useSelector } from 'react-redux'
-import { loguear } from '../actions/actions'
+import { Block, Button, Text, theme, Input } from 'galio-framework';
+
+// redux imports
+import { connect } from 'react-redux';
+import { saveUser } from '../actions/user';
+import { bindActionCreators } from 'redux';
 
 const { height, width } = Dimensions.get('screen');
 
-import materialTheme from '../constants/Theme';
 import Images from '../constants/Images';
 
-
-export default class Onboarding extends React.Component {
+class Onboarding extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user:'',
-      pass:''      
+      user: '',
+      pass: ''
     };
   }
 
-  setUsuario = txt => this.setState({user:txt})
-  setPassword = txt => this.setState({pass:txt})
+  logueo = async (user, password) => {
+    const response = await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}`, {
+      method: 'get',
+      headers: new Headers({
+        'Authorization': 'Basic YWRtaW46QURNSU4='
+      })
+    })
 
-  logueo = async (user,passwd) => {
-    return await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}/${passwd}`, {
-                method: 'get', headers: new Headers({
-                    'Authorization': 'Basic YWRtaW46QURNSU4='
-                })
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(responseJson.result);
-                // this.setState({  });
-                // console.log(this.state.users);
-                return {
-                    users: responseJson
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    if (response.status === 200) {
+      const responseJson = await response.json()
+      return responseJson
+    }
+  }
+
+  handleOnPress = async () => {
+    try {
+      const { navigation, actions } = this.props;
+      const usuario = await this.logueo(this.state.user, this.state.pass)
+      actions.saveUser(usuario)
+      navigation.navigate('App', {
+        usuario
+      })
+    } catch (error) {
+      console.warn("There is an error on logueo", new Date(), error.message)
+      return []
+    }
   }
 
   render() {
-    const { navigation } = this.props;    
-    // const dispatch = useDispatch();
-
-    // const logueado = useSelector(state => state.logueado)
-
     return (
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Block flex center>
           <ImageBackground
-            source={{  uri: Images.Onboarding }}
+            source={{ uri: Images.Onboarding }}
             style={{ height: height, width: width, marginTop: '-55%', zIndex: 1 }}
           />
         </Block>
@@ -71,12 +72,14 @@ export default class Onboarding extends React.Component {
               </Text>
             </Block>
             <Block center>
-            <Input
+              <Input
                 right
                 color="black"
                 style={styles.search}
                 placeholder="User"
-                onChange={e => this.setUsuario(e.target.value)}
+                onChange={e => {
+                  this.setState({ user: e.nativeEvent.text })
+                }}
               />
               <Input
                 right
@@ -84,24 +87,14 @@ export default class Onboarding extends React.Component {
                 style={styles.Text}
                 placeholder="Password"
                 secureTextEntry={true}
-                onChange={e => this.setPassword(e.target.value)}
+                onChange={e => this.setState({ pass: e.nativeEvent.text })}
               />
               <Button
                 shadowless
                 style={styles.button}
                 color='rgb(220, 0, 78)'
-                onPress={() => {
-                  const usuario = this.logueo(this.state.user,this.state.pass)
-
-                  console.dir(usuario);
-                  navigation.navigate('App',{
-                    usuario
-                  })
-                }}
-                /* onPress = {() => {
-                  dispatch(loguear(this.state.user,this.state.pass))
-                }} */
-                >
+                onPress={this.handleOnPress}
+              >
                 Log In
               </Button>
             </Block>
@@ -128,3 +121,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
 });
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const ActionCreators = Object.assign(
+  {},
+  saveUser,
+);
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Onboarding)
