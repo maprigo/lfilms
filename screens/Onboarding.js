@@ -73,6 +73,7 @@ class Onboarding extends React.Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <Block flex style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -122,9 +123,19 @@ class Onboarding extends React.Component {
                 Log In
               </Button>
             </Block>
+            <Block style={{ marginVertical: 40 }}>
+              <Button
+                shadowless
+                style={styles.button}
+                color={theme.COLORS.TWITTER}
+                onPress={() => navigation.navigate('Register')}
+              >
+                Register
+              </Button>
+            </Block>
           </Block>
         </Block>
-      </Block>
+      </Block >
     );
   }
 }

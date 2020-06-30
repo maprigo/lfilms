@@ -2,22 +2,28 @@ import React from "react";
 import { TouchableWithoutFeedback, ScrollView, StyleSheet, Image } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import { useSafeArea } from "react-native-safe-area-context";
+import AsyncStorage from '@react-native-community/async-storage';
 
 // redux imports
 import { connect } from 'react-redux';
+import { unsetUser } from '../actions/user';
 
 import { Icon, Drawer as DrawerCustomItem } from '../components/';
 import { Images, materialTheme } from "../constants/";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 
 const profile = {
   avatar: Images.Profile,
 
 };
 
+
+
 function CustomDrawerContent({
   drawerPosition,
   navigation,
   user,
+  unsetUser,
   focused,
   state,
   ...rest
@@ -30,6 +36,20 @@ function CustomDrawerContent({
     "Movies",
     "Settings",
   ];
+
+  const handleSignOut = async () => {
+    try {
+      unsetUser()
+      await AsyncStorage.removeItem('@user');
+      navigation.navigate('Onboarding')
+      return true;
+    }
+    catch (error) {
+      console.warn("There is an error on Onpres menu Logout", new Date(), error.message)
+      return false
+    }
+  }
+
   return (
     <Block
       style={styles.container}
@@ -48,20 +68,13 @@ function CustomDrawerContent({
             }
           </Block>
         </TouchableWithoutFeedback>
-        <Block row>
-          <Block middle style={styles.pro}>
-            <Text size={16} color="white">
-              {profile.plan}
-            </Text>
+        <TouchableNativeFeedback onPress={handleSignOut}>
+          <Block >
+            <Text>
+              Salir
+          </Text>
           </Block>
-          <Text size={16} muted style={styles.seller}>
-            {profile.type}
-          </Text>
-          <Text size={16} color={materialTheme.COLORS.WARNING}>
-            {profile.rating}{" "}
-            <Icon name="shape-star" family="GalioExtra" size={14} />
-          </Text>
-        </Block>
+        </TouchableNativeFeedback>
       </Block>
       <Block flex style={{ paddingLeft: 7, paddingRight: 14 }}>
         <ScrollView
@@ -86,7 +99,7 @@ function CustomDrawerContent({
           })}
         </ScrollView>
       </Block>
-    </Block>
+    </Block >
   );
 }
 
@@ -132,7 +145,10 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
+const mapDispatchToProps = (dispatch) => ({
+  unsetUser: () => dispatch(unsetUser())
+})
 
-export default connect(mapStateToProps)(CustomDrawerContent)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomDrawerContent)
 
 

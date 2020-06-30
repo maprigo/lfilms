@@ -101,6 +101,7 @@ class Movies extends React.Component {
                       item={item}
                       index={imgIndex}
                       style={styles.thumb}
+                      key={`${imgIndex}-${item.id}`}
                     />
                   ))
                 }

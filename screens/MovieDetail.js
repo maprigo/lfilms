@@ -14,7 +14,7 @@ function Item({ item }) {
     return (
         <Block>
             <Text size={16}>{item.message}</Text>
-            <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>{item.userId} rated : {item.rating}</Text>
+            <Text size={12} color={theme.COLORS.PRIMARY} >{item.userId} rated : {item.rating}</Text>
         </Block>
     );
 }
@@ -45,26 +45,34 @@ class MovieDetail extends React.Component {
     SaveComment = async (comment, rate) => {
 
 
-        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/user/${user}`, {
-            method: 'get',
-            headers: new Headers({
-                'Authorization': 'Basic YWRtaW46QURNSU4='
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/movie/${this.props.route.params.movie.id}/rating`, {
+            method: 'post',
+            headers: {
+                'Authorization': 'Basic YWRtaW46QURNSU4=',
+                'Content-Type': 'application/json',
+                'Accept': '*/*'
+            },
+            body: JSON.stringify({
+                "message": comment,
+                "rating": rate,
+                "userId": this.props.route.params.movie.id
             })
         })
 
-        console.log("Response Save Comment:", response)
+        // console.log("Response Save Comment:", response)
 
         if (response.status === 200) {
-            const responseJson = await response.json()
-            return responseJson
+            const storeComment = await response.json()
+            this.setState({ comments: storeComment.comments });
+            console.log(storeComment.comments)
+            return storeComment
         }
     }
 
     handleOnPress = async () => {
         try {
-            const { navigation } = this.props;
             const { comment, rate } = this.state;
-            const userData = await this.SaveComment(comment, rate)
+            await this.SaveComment(comment, rate)
         } catch (error) {
             console.warn("There is an error on HandleOnPress Comment", new Date(), error.message)
             return []
@@ -74,7 +82,7 @@ class MovieDetail extends React.Component {
 
     render() {
         const { movie } = this.props.route.params
-        // console.log(this.state.comments)
+        console.log("render", this.state.comments)
         return (
             <Block flex style={styles.profile}>
                 <Block flex>
@@ -101,26 +109,33 @@ class MovieDetail extends React.Component {
                     </ImageBackground>
                 </Block>
                 <Block flex style={styles.options}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <Block flex style={styles.scrollViewContainer}>
+                            <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
+                                <Block middle>
+                                    <Text bold size={12} style={{ marginBottom: 8 }}>{movie.popularity}</Text>
+                                    <Text muted size={12}>Views</Text>
+                                </Block>
+                                <Block middle>
+                                    <Text size={16} color={materialTheme.COLORS.ERROR}>
+                                        <Icon name="favorite" family="Material" size={14} />
+                                    </Text>
+                                </Block>
+                                <Block >
+                                    <Text bold size={12} style={{ marginBottom: 8 }}>{movie.original_language}</Text>
+                                    <Text muted size={12}>Language</Text>
+                                </Block>
+                            </Block>
+                            <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+                                <Text size={28}>About:</Text>
+                            </Block>
+                            <Block>
+                                <Text size={16}>{movie.overview}</Text>
+                            </Block>
 
-                    <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
-                        <Block middle>
-                            <Text bold size={12} style={{ marginBottom: 8 }}>{movie.popularity}</Text>
-                            <Text muted size={12}>Views</Text>
-                        </Block>
-                        <Block >
-                            <Text bold size={12} style={{ marginBottom: 8 }}>{movie.original_language}</Text>
-                            <Text muted size={12}>Language</Text>
-                        </Block>
-                    </Block>
-                    <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
-                        <Text size={28}>About:</Text>
-                    </Block>
-                    <Block>
-                        <Text size={16}>{movie.overview}</Text>
-                    </Block>
-                    <ScrollView showsVerticalScrollIndicator={true}>
-                        <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
-                            <Text size={28}>Comments:</Text>
+                            <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
+                                <Text size={28}>Comments:</Text>
+                            </Block>
                             <Block>
                                 <Block >
                                     {this.state.comments &&
@@ -129,44 +144,44 @@ class MovieDetail extends React.Component {
                                                 item={item}
                                                 index={imgIndex}
                                                 style={styles.thumb}
+                                                key={`${imgIndex}-${item.id}`}
                                             />
                                         ))
                                     }
                                 </Block>
                             </Block>
 
-                        </Block>
-
-                        <Block>
-                            <Text>Left Your Comment:</Text>
-                        </Block>
-                        <Block center>
-                            <Input
-                                right
-                                color="black"
-                                style={styles.text}
-                                placeholder="Comment"
-                                onChange={e => {
-                                    this.setState({ comment: e.nativeEvent.text })
-                                }}
-                            />
-                            <Input
-                                right
-                                color="black"
-                                style={styles.text}
-                                placeholder="Rate"
-                                onChange={e => {
-                                    this.setState({ rate: e.nativeEvent.text })
-                                }}
-                            />
-                            <Button
-                                shadowless
-                                style={styles.button}
-                                color='rgb(220, 0, 78)'
-                                onPress={this.handleOnPress}
-                            >
-                                Log In
+                            <Block row>
+                                <Text>Left Your Comment</Text>
+                            </Block>
+                            <Block>
+                                <Input
+                                    right
+                                    color="black"
+                                    style={styles.text}
+                                    placeholder="Comment"
+                                    onChange={e => {
+                                        this.setState({ comment: e.nativeEvent.text })
+                                    }}
+                                />
+                                <Input
+                                    right
+                                    color="black"
+                                    style={styles.text}
+                                    placeholder="Rate"
+                                    onChange={e => {
+                                        this.setState({ rate: e.nativeEvent.text })
+                                    }}
+                                />
+                                <Button
+                                    shadowless
+                                    style={styles.button}
+                                    color='rgb(220, 0, 78)'
+                                    onPress={this.handleOnPress}
+                                >
+                                    Log In
                             </Button>
+                            </Block>
                         </Block>
                     </ScrollView>
                 </Block>
@@ -211,9 +226,12 @@ const styles = StyleSheet.create({
     seller: {
         marginRight: theme.SIZES.BASE / 2,
     },
+    scrollViewContainer: {
+        marginBottom: theme.SIZES.BASE * 10,
+        padding: theme.SIZES.BASE,
+    },
     options: {
         position: 'relative',
-        padding: theme.SIZES.BASE,
         marginHorizontal: theme.SIZES.BASE,
         marginTop: -theme.SIZES.BASE * 7,
         borderTopLeftRadius: 13,

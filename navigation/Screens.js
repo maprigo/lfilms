@@ -8,6 +8,7 @@ import { Block, Text, theme } from "galio-framework";
 import ComponentsScreen from '../screens/Components';
 import HomeScreen from '../screens/Home';
 import OnboardingScreen from '../screens/Onboarding';
+import RegisterScreen from '../screens/Register'
 import MoviesScreen from '../screens/Movies';
 import MovieDetailScreen from '../screens/MovieDetail';
 import ProScreen from '../screens/Pro';
@@ -322,6 +323,13 @@ function OnboardingStack(props) {
       <Stack.Screen
         name="Onboarding"
         component={OnboardingScreen}
+        option={{
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
         option={{
           headerTransparent: true
         }}

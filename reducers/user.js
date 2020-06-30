@@ -1,4 +1,4 @@
-const { SAVE_USER } = require("../actions/user");
+const { SAVE_USER, UNSET_USER } = require("../actions/user");
 
 const stateInitial = {
     user: null,
@@ -16,6 +16,9 @@ function user(state, action) {
     switch (action.type) {
         case SAVE_USER:
             return user
+            break;
+        case UNSET_USER:
+            return stateInitial;
             break;
 
         default:
