@@ -31,9 +31,10 @@ function CustomDrawerContent({
   const insets = useSafeArea();
   const screens = [
     "Home",
-    "Browse",
-    "List",
     "Movies",
+    "Series",
+    "Browse",
+    "Favority List",
     "Settings",
   ];
 

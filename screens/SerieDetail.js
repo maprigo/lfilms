@@ -19,7 +19,7 @@ function Item({ item }) {
     );
 }
 
-class MovieDetail extends React.Component {
+class SerieDetail extends React.Component {
 
     state = {
         comments: null,
@@ -28,7 +28,7 @@ class MovieDetail extends React.Component {
     }
 
     componentDidMount = async () => {
-        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/movie/${this.props.route.params.movie.id}/rating`, {
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/tv/${this.props.route.params.movie.id}/rating`, {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Basic YWRtaW46QURNSU4='
@@ -45,7 +45,7 @@ class MovieDetail extends React.Component {
     SaveComment = async (comment, rate) => {
 
 
-        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/movie/${this.props.route.params.movie.id}/rating`, {
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/tv/${this.props.route.params.movie.id}/rating`, {
             method: 'post',
             headers: {
                 'Authorization': 'Basic YWRtaW46QURNSU4=',
@@ -176,10 +176,10 @@ class MovieDetail extends React.Component {
                                 <Button
                                     shadowless
                                     style={styles.button}
-                                    color={theme.COLORS.TWITTER}
+                                    color='rgb(220, 0, 78)'
                                     onPress={this.handleOnPress}
                                 >
-                                    Comment
+                                    Log In
                             </Button>
                             </Block>
                         </Block>
@@ -190,7 +190,7 @@ class MovieDetail extends React.Component {
     }
 }
 
-export default MovieDetail
+export default SerieDetail
 
 const styles = StyleSheet.create({
     profile: {

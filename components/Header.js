@@ -127,14 +127,14 @@ class Header extends React.Component {
       <Block row style={styles.tabs}>
         <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Pro')}>
           <Block row middle>
-            <Icon name="grid" family="feather" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>{tabTitleLeft || 'Categories'}</Text>
+            <Icon name="movie" family="MaterialIcons" style={{ paddingRight: 8 }} />
+            <Text size={16} style={styles.tabTitle}>{tabTitleLeft || 'Movies'}</Text>
           </Block>
         </Button>
         <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
           <Block row middle>
-            <Icon size={16} name="camera-18" family="GalioExtra" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>{tabTitleRight || 'Best Deals'}</Text>
+            <Icon size={16} name="tv" family="Feather" style={{ paddingRight: 8 }} />
+            <Text size={16} style={styles.tabTitle}>{tabTitleRight || 'Tv shows'}</Text>
           </Block>
         </Button>
       </Block>

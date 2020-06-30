@@ -11,6 +11,10 @@ import OnboardingScreen from '../screens/Onboarding';
 import RegisterScreen from '../screens/Register'
 import MoviesScreen from '../screens/Movies';
 import MovieDetailScreen from '../screens/MovieDetail';
+import SeriesScreen from '../screens/Series';
+import SerieDetailScreen from '../screens/SerieDetail';
+import BrowseScreen from '../screens/Browse';
+import BrowseDetailScreen from '../screens/BrowseDetail';
 import ProScreen from '../screens/Pro';
 import SettingsScreen from '../screens/Settings';
 
@@ -65,7 +69,83 @@ function MoviesStack(props) {
     </Stack.Navigator>
   );
 }
+function SeriesStack(props) {
+  return (
+    <Stack.Navigator initialRouteName="SeriesList" mode="card" headerMode="screen">
+      <Stack.Screen
+        name="SeriesList"
+        component={SeriesScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              white
+              transparent
+              title="Series"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="SerieDetail"
+        component={SerieDetailScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              white
+              transparent
+              title="Serie Detail"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
+function BrowseStack(props) {
+  return (
+    <Stack.Navigator initialRouteName="Browse" mode="card" headerMode="screen">
+      <Stack.Screen
+        name="Browse"
+        component={BrowseScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              white
+              transparent
+              title="Browser"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+      <Stack.Screen
+        name="BrowseDetail"
+        component={BrowseDetailScreen}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header
+              white
+              transparent
+              title="Browse Detail"
+              scene={scene}
+              navigation={navigation}
+            />
+          ),
+          headerTransparent: true
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 function SettingsStack(props) {
   return (
     <Stack.Navigator
@@ -106,14 +186,13 @@ function HomeStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
-        name="Browse"
+        name="Favority List"
         component={HomeScreen}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              search
               tabs
-              title="Browse"
+              title="Favority List"
               navigation={navigation}
               scene={scene}
             />
@@ -127,7 +206,7 @@ function HomeStack(props) {
           header: ({ navigation, scene }) => (
             <Header back white transparent title="" navigation={navigation} scene={scene} />
           ),
-          headerTransparent: true
+          headerTransparent: false
         }}
       />
     </Stack.Navigator>
@@ -175,45 +254,16 @@ function AppStack(props) {
           drawerIcon: ({ focused }) => (
             <Icon
               size={16}
-              name="shop"
-              family="GalioExtra"
+              name="home"
+              family="Feather"
               color={focused ? "white" : materialTheme.COLORS.MUTED}
             />
           )
         }}
       />
       <Drawer.Screen
-        name="Woman"
-        component={ProScreen}
-        options={{
-          drawerIcon: ({ focused }) => (
-            <Icon
-              size={16}
-              name="md-woman"
-              family="ionicon"
-              color={focused ? "white" : materialTheme.COLORS.MUTED}
-              style={{ marginLeft: 4, marginRight: 4 }}
-            />
-          )
-        }}
-      />
-      <Drawer.Screen
-        name="Man"
-        component={ProScreen}
-        options={{
-          drawerIcon: ({ focused }) => (
-            <Icon
-              size={16}
-              name="man"
-              family="entypo"
-              color={focused ? "white" : materialTheme.COLORS.MUTED}
-            />
-          )
-        }}
-      />
-      <Drawer.Screen
-        name="Kids"
-        component={ProScreen}
+        name="Browse"
+        component={BrowseStack}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon
@@ -226,22 +276,22 @@ function AppStack(props) {
         }}
       />
       <Drawer.Screen
-        name="New Collection"
-        component={ProScreen}
+        name="Movies"
+        component={MoviesStack}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon
               size={16}
-              name="grid-on"
-              family="material"
+              name="movie"
+              family="MaterialIcon"
               color={focused ? "white" : materialTheme.COLORS.MUTED}
             />
           )
         }}
       />
       <Drawer.Screen
-        name="Movies"
-        component={MoviesStack}
+        name="Series"
+        component={SeriesStack}
         options={{
           drawerIcon: ({ focused }) => (
             <Icon

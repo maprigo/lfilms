@@ -21,7 +21,7 @@ function Item({ item }) {
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate('MovieDetail', {
+                navigation.navigate('SerieDetail', {
                     movie: item
                 })
             }}
@@ -39,14 +39,14 @@ function Item({ item }) {
         </TouchableOpacity>
     );
 }
-class Pro extends React.Component {
+class Series extends React.Component {
     state = {
         films: null,
     }
 
     componentDidMount = async () => {
         try {
-            const response = await fetch('https://movie-ranker-backend.herokuapp.com/movies/search', {
+            const response = await fetch('https://movie-ranker-backend.herokuapp.com/tv/search', {
                 method: 'get', headers: new Headers({
                     'Authorization': 'Basic YWRtaW46QURNSU4='
                 })
@@ -59,7 +59,7 @@ class Pro extends React.Component {
             }
 
         } catch (error) {
-            console.warn("There is an error on Movies Did Mount", new Date(), error.message)
+            console.warn("There is an error on Series Did Mount", new Date(), error.message)
             return []
         }
     }
@@ -76,7 +76,7 @@ class Pro extends React.Component {
                         imageStyle={styles.profileImage}>
                         <Block flex style={styles.profileDetails}>
                             <Block style={styles.profileTexts}>
-                                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Rockeando Pelis</Text>
+                                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Rockeando Series</Text>
                                 <Block row space="between">
                                     <Block row>
                                         <Text color="white" size={16} muted style={styles.seller}> Recomend by {user.firstName}</Text>
@@ -193,4 +193,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps)(Pro)
+export default connect(mapStateToProps)(Series)

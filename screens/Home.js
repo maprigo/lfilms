@@ -46,7 +46,7 @@ class Movies extends React.Component {
 
   componentDidMount = async () => {
     try {
-      const response = await fetch('https://movie-ranker-backend.herokuapp.com/movies/search', {
+      const response = await fetch('https://movie-ranker-backend.herokuapp.com/tv/search?title=yo', {
         method: 'get', headers: new Headers({
           'Authorization': 'Basic YWRtaW46QURNSU4='
         })
@@ -76,10 +76,10 @@ class Movies extends React.Component {
             imageStyle={styles.profileImage}>
             <Block flex style={styles.profileDetails}>
               <Block style={styles.profileTexts}>
-                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Rockeando Pelis</Text>
+                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Save list of {user.firstName}</Text>
                 <Block row space="between">
                   <Block row>
-                    <Text color="white" size={16} muted style={styles.seller}> Recomend by {user.firstName}</Text>
+                    <Text color="white" size={20} muted style={styles.seller}> </Text>
                   </Block>
                   <Block middle style={styles.LABEL}>
                     <Text size={16} color="white">{user.favoriteGenre}</Text>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, FlatList, TouchableOpacity } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import { Block, Text, theme, Input, Button } from 'galio-framework';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Icon, Header } from '../components';
@@ -21,7 +21,7 @@ function Item({ item }) {
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate('MovieDetail', {
+                navigation.navigate('BrowseDetail', {
                     movie: item
                 })
             }}
@@ -39,9 +39,10 @@ function Item({ item }) {
         </TouchableOpacity>
     );
 }
-class Pro extends React.Component {
+class Browse extends React.Component {
     state = {
         films: null,
+        search: null,
     }
 
     componentDidMount = async () => {
@@ -54,12 +55,40 @@ class Pro extends React.Component {
 
             if (response.status === 200) {
                 const responseJson = await response.json()
-                // console.log(responseJson)
                 this.setState({ films: responseJson.results });
             }
 
         } catch (error) {
             console.warn("There is an error on Movies Did Mount", new Date(), error.message)
+            return []
+        }
+    }
+
+    search = async (search) => {
+
+
+        const response = await fetch(`https://movie-ranker-backend.herokuapp.com/movies/search?title=${search}`, {
+            method: 'get',
+            headers: {
+                'Authorization': 'Basic YWRtaW46QURNSU4='
+            }
+        })
+        console.log(response.status)
+
+        if (response.status === 200) {
+            const searchFilms = await response.json()
+            this.setState({ films: searchFilms.results });
+            console.log(searchFilms.results)
+            return searchFilms
+        }
+    }
+
+    handleOnPress = async () => {
+        try {
+            const { search } = this.state;
+            await this.search(search)
+        } catch (error) {
+            console.warn("There is an error on HandleOnPress Search", new Date(), error.message)
             return []
         }
     }
@@ -74,23 +103,29 @@ class Pro extends React.Component {
                         source={{ uri: Images.Onboarding }}
                         style={styles.profileContainer}
                         imageStyle={styles.profileImage}>
-                        <Block flex style={styles.profileDetails}>
-                            <Block style={styles.profileTexts}>
-                                <Text color="white" size={28} style={{ paddingBottom: 8 }}>Rockeando Pelis</Text>
-                                <Block row space="between">
-                                    <Block row>
-                                        <Text color="white" size={16} muted style={styles.seller}> Recomend by {user.firstName}</Text>
-                                    </Block>
-                                    <Block middle style={styles.LABEL}>
-                                        <Text size={16} color="white">{user.favoriteGenre}</Text>
-                                    </Block>
-                                </Block>
-                            </Block>
+                        <Block flex >
+
+
+
                             <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']} style={styles.gradient} />
                         </Block>
                     </ImageBackground>
+
                 </Block>
+
                 <Block flex style={styles.options}>
+                    <Block center>
+                        <Input
+                            right
+                            color="black"
+                            style={styles.text}
+                            placeholder="Search"
+                            onChange={e => {
+                                this.setState({ search: e.nativeEvent.text })
+                            }}
+                            onChangeText={this.handleOnPress}
+                        />
+                    </Block>
                     <ScrollView showsVerticalScrollIndicator={false}>
 
                         <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
@@ -105,6 +140,7 @@ class Pro extends React.Component {
                                         />
                                     ))
                                 }
+
                             </Block>
                         </Block>
                     </ScrollView>
@@ -193,4 +229,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps)(Pro)
+export default connect(mapStateToProps)(Browse)

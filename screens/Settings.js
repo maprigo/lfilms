@@ -10,10 +10,10 @@ export default class Settings extends React.Component {
   toggleSwitch = switchNumber => this.setState({ [switchNumber]: !this.state[switchNumber] });
 
   renderItem = ({ item }) => {
-    const {navigate} = this.props.navigation;
+    const { navigate } = this.props.navigation;
 
-    switch(item.type) {
-      case 'switch': 
+    switch (item.type) {
+      case 'switch':
         return (
           <Block row middle space="between" style={styles.rows}>
             <Text size={14}>{item.title}</Text>
@@ -26,11 +26,11 @@ export default class Settings extends React.Component {
             />
           </Block>
         );
-      case 'button': 
+      case 'button':
         return (
           <Block style={styles.rows}>
             <TouchableOpacity onPress={() => navigate('Pro')}>
-              <Block row middle space="between" style={{paddingTop:7}}>
+              <Block row middle space="between" style={{ paddingTop: 7 }}>
                 <Text size={14}>{item.title}</Text>
                 <Icon name="angle-right" family="font-awesome" style={{ paddingRight: 5 }} />
               </Block>
@@ -43,20 +43,7 @@ export default class Settings extends React.Component {
 
   render() {
     const recommended = [
-      { title: "Use FaceID to sign in", id: "face", type: "switch" },
-      { title: "Auto-Lock security", id: "autolock", type: "switch" },
-      { title: "Notifications", id: "Notifications", type: "button" },
-    ];
-
-    const payment = [
-      { title: "Manage Payment Options", id: "Payment", type: "button" },
-      { title: "Manage Gift Cards", id: "gift", type: "button" },
-    ];
-    
-    const privacy = [
-      { title: "User Agreement", id: "Agreement", type: "button" },
-      { title: "Privacy", id: "Privacy", type: "button" },
-      { title: "About", id: "About", type: "button" },
+      { title: "Public", id: "face", type: "switch" },
     ];
 
     return (
@@ -70,42 +57,17 @@ export default class Settings extends React.Component {
           ListHeaderComponent={
             <Block style={styles.title}>
               <Text bold center size={theme.SIZES.BASE} style={{ paddingBottom: 5 }}>
-                Recommended Settings
+                List Settings
               </Text>
               <Text center muted size={12}>
-                These are the most important settings
+                Other user see the lists
               </Text>
             </Block>
           }
         />
-        <Block style={styles.title}>
-          <Text bold center size={theme.SIZES.BASE} style={{ paddingBottom: 5 }}>
-          Payment Settings
-          </Text>
-          <Text center muted size={12}>
-          These are also important settings
-          </Text>
-        </Block>
-        <FlatList
-          data={payment}
-          keyExtractor={(item, index) => item.id}
-          renderItem={this.renderItem}
-        />
-        <Block style={styles.title}>
-          <Text bold center size={theme.SIZES.BASE} style={{ paddingBottom: 5 }}>
-          Privacy Settings
-          </Text>
-          <Text center muted size={12}>
-          Third most important settings
-          </Text>
-        </Block>
-        <FlatList
-          data={privacy}
-          keyExtractor={(item, index) => item.id}
-          renderItem={this.renderItem}
-        />
+
       </View>
-      
+
     );
   }
 }

@@ -19,7 +19,7 @@ function Item({ item }) {
     );
 }
 
-class MovieDetail extends React.Component {
+class BrowseDetail extends React.Component {
 
     state = {
         comments: null,
@@ -79,8 +79,12 @@ class MovieDetail extends React.Component {
         }
     }
 
+    onPressHeart = () => {
+        this.setState({ color: theme.COLORS.TWITTER });
+    }
 
     render() {
+
         const { movie } = this.props.route.params
         console.log("render", this.state.comments)
         return (
@@ -116,9 +120,9 @@ class MovieDetail extends React.Component {
                                     <Text bold size={12} style={{ marginBottom: 8 }}>{movie.popularity}</Text>
                                     <Text muted size={12}>Views</Text>
                                 </Block>
-                                <Block middle>
-                                    <Text size={16} color={materialTheme.COLORS.ERROR}>
-                                        <Icon name="favorite" family="Material" size={14} />
+                                <Block middle onPress={this.onPressHeart}>
+                                    <Text size={16}  >
+                                        <Icon color={this.state.color} name="favorite" family="Material" size={14} />
                                     </Text>
                                 </Block>
                                 <Block >
@@ -190,7 +194,7 @@ class MovieDetail extends React.Component {
     }
 }
 
-export default MovieDetail
+export default BrowseDetail
 
 const styles = StyleSheet.create({
     profile: {
