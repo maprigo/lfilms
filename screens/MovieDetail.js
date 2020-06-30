@@ -14,7 +14,7 @@ function Item({ item }) {
     return (
         <Block>
             <Text size={16}>{item.message}</Text>
-            <Text size={12} color={theme.COLORS.PRIMARY} >{item.userId} rated : {item.rating}</Text>
+            <Text size={12} color={theme.COLORS.PRIMARY} >rated : {item.rating}</Text>
         </Block>
     );
 }
@@ -59,7 +59,7 @@ class MovieDetail extends React.Component {
             })
         })
 
-        // console.log("Response Save Comment:", response)
+        console.log("Response Save Comment:", this.props.route.params)
 
         if (response.status === 200) {
             const storeComment = await response.json()
