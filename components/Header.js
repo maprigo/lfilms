@@ -63,38 +63,38 @@ class Header extends React.Component {
     switch (title) {
       case 'Home':
         return ([
-          <ChatButton key='chat-home' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-home' navigation={navigation} isWhite={white} />
+          // <ChatButton key='chat-home' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-home' navigation={navigation} isWhite={white} />
         ]);
       case 'Movies':
         return ([
-          <ChatButton key='chat-categories' navigation={navigation} />,
-          <BasketButton key='basket-categories' navigation={navigation} />
+          // <ChatButton key='chat-categories' navigation={navigation} />,
+          // <BasketButton key='basket-categories' navigation={navigation} />
         ]);
       case 'Categories':
         return ([
-          <ChatButton key='chat-categories' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-categories' navigation={navigation} isWhite={white} />
+          // <ChatButton key='chat-categories' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-categories' navigation={navigation} isWhite={white} />
         ]);
       case 'Category':
         return ([
-          <ChatButton key='chat-deals' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-deals' navigation={navigation} isWhite={white} />
+          // <ChatButton key='chat-deals' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-deals' navigation={navigation} isWhite={white} />
         ]);
       case 'Profile':
         return ([
-          <ChatButton key='chat-profile' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-deals' navigation={navigation} isWhite={white} />
+          // <ChatButton key='chat-profile' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-deals' navigation={navigation} isWhite={white} />
         ]);
       case 'Product':
         return ([
-          <SearchButton key='search-product' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-product' navigation={navigation} isWhite={white} />
+          // <SearchButton key='search-product' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-product' navigation={navigation} isWhite={white} />
         ]);
       case 'Search':
         return ([
-          <ChatButton key='chat-search' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-search' navigation={navigation} isWhite={white} />
+          // <ChatButton key='chat-search' navigation={navigation} isWhite={white} />,
+          // <BasketButton key='basket-search' navigation={navigation} isWhite={white} />
         ]);
       // case 'Settings':
       //   return ([
