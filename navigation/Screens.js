@@ -296,9 +296,10 @@ function AppStack(props) {
           drawerIcon: ({ focused }) => (
             <Icon
               size={16}
-              name="circle-10"
-              family="GalioExtra"
+              name="gears"
+              family="font-awesome"
               color={focused ? "white" : materialTheme.COLORS.MUTED}
+              style={{ marginRight: -3 }}
             />
           )
         }}

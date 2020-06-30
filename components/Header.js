@@ -9,29 +9,29 @@ import materialTheme from '../constants/Theme';
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-const ChatButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
-    <Icon
-      family="GalioExtra"
-      size={16}
-      name="chat-33"
-      color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
-    />
-    <Block middle style={styles.notify} />
-  </TouchableOpacity>
-);
+// const ChatButton = ({ isWhite, style, navigation }) => (
+//   <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+//     <Icon
+//       family="GalioExtra"
+//       size={16}
+//       name="chat-33"
+//       color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+//     />
+//     <Block middle style={styles.notify} />
+//   </TouchableOpacity>
+// );
 
-const BasketButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
-    <Icon
-      family="GalioExtra"
-      size={16}
-      name="basket-simple"
-      color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
-    />
-    <Block middle style={styles.notify} />
-  </TouchableOpacity>
-);
+// const BasketButton = ({ isWhite, style, navigation }) => (
+//   <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+//     <Icon
+//       family="GalioExtra"
+//       size={16}
+//       name="basket-simple"
+//       color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+//     />
+//     <Block middle style={styles.notify} />
+//   </TouchableOpacity>
+// );
 
 const SearchButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
@@ -96,11 +96,11 @@ class Header extends React.Component {
           <ChatButton key='chat-search' navigation={navigation} isWhite={white} />,
           <BasketButton key='basket-search' navigation={navigation} isWhite={white} />
         ]);
-      case 'Settings':
-        return ([
-          <ChatButton key='chat-search' navigation={navigation} isWhite={white} />,
-          <BasketButton key='basket-search' navigation={navigation} isWhite={white} />
-        ]);
+      // case 'Settings':
+      //   return ([
+      //     <ChatButton key='chat-search' navigation={navigation} isWhite={white} />,
+      //     <BasketButton key='basket-search' navigation={navigation} isWhite={white} />
+      //   ]);
       default:
         break;
     }

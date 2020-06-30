@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Switch, FlatList, Platform, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Switch, FlatList, Platform, TouchableOpacity, ScrollView } from "react-native";
 import { Block, Text, theme, Icon } from "galio-framework";
 
 import materialTheme from '../constants/Theme';
@@ -46,8 +46,17 @@ export default class Settings extends React.Component {
       { title: "Public", id: "face", type: "switch" },
     ];
 
+    const payment = [
+      { title: "Action", id: "Payment", type: "switch" },
+      { title: "Suspence", id: "autolock", type: "switch" },
+      { title: "Horror", id: "Notifiswitchcations", type: "switch" },
+      { title: "Drama", id: "Notificatiswitchons", type: "switch" },
+      { title: "Comedy", id: "Notswitchifications", type: "switch" },
+    ];
+
+
     return (
-      <View
+      <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.settings}>
         <FlatList
@@ -57,16 +66,28 @@ export default class Settings extends React.Component {
           ListHeaderComponent={
             <Block style={styles.title}>
               <Text bold center size={theme.SIZES.BASE} style={{ paddingBottom: 5 }}>
-                List Settings
+                Preference
               </Text>
               <Text center muted size={12}>
-                Other user see the lists
+                Public or Private List
               </Text>
             </Block>
           }
         />
-
-      </View>
+        <Block style={styles.title}>
+          <Text bold center size={theme.SIZES.BASE} style={{ paddingBottom: 5 }}>
+            What you like to watch ?
+          </Text>
+          <Text center muted size={12}>
+            Genre
+          </Text>
+        </Block>
+        <FlatList
+          data={payment}
+          keyExtractor={(item, index) => item.id}
+          renderItem={this.renderItem}
+        />
+      </ScrollView>
 
     );
   }

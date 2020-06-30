@@ -40,7 +40,6 @@ class Register extends React.Component {
         console.log(this.state)
         console.log({
             "email": user,
-            "favoriteGenre": gender,
             "firstName": name,
             "id": user,
             "lastName": lname,
@@ -101,7 +100,7 @@ class Register extends React.Component {
                                 <Input
                                     right
                                     color="black"
-                                    style={styles.search}
+                                    style={styles.Text}
                                     placeholder="E-mail"
                                     onChange={e => {
                                         this.setState({ user: e.nativeEvent.text })
@@ -112,7 +111,6 @@ class Register extends React.Component {
                                     color="black"
                                     style={styles.Text}
                                     placeholder="Name"
-                                    secureTextEntry={true}
                                     onChange={e => this.setState({ name: e.nativeEvent.text })}
                                 />
                                 <Input
@@ -120,7 +118,6 @@ class Register extends React.Component {
                                     color="black"
                                     style={styles.Text}
                                     placeholder="Last Name"
-                                    secureTextEntry={true}
                                     onChange={e => this.setState({ lname: e.nativeEvent.text })}
                                 />
                                 <Input
@@ -131,18 +128,10 @@ class Register extends React.Component {
                                     secureTextEntry={true}
                                     onChange={e => this.setState({ pass: e.nativeEvent.text })}
                                 />
-                                <Input
-                                    right
-                                    color="black"
-                                    style={styles.Text}
-                                    placeholder="Gender"
-                                    secureTextEntry={true}
-                                    onChange={e => this.setState({ gender: e.nativeEvent.text })}
-                                />
                                 <Button
                                     shadowless
                                     style={styles.button}
-                                    color='rgb(220, 0, 78)'
+                                    color='#514c4c'
                                     onPress={this.handleOnPress}
                                 >
                                     Register

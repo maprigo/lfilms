@@ -30,7 +30,6 @@ function CustomDrawerContent({
 }) {
   const insets = useSafeArea();
   const screens = [
-    "Home",
     "Movies",
     "Series",
     "Browse",
@@ -63,7 +62,7 @@ function CustomDrawerContent({
           <Block style={styles.profile}>
             <Image source={{ uri: profile.avatar }} style={styles.avatar} />
             {user &&
-              <Text h5 color={"black"}>
+              <Text h5 color={"white"}>
                 {`${user.firstName} ${user.lastName}`}
               </Text>
             }
@@ -71,8 +70,8 @@ function CustomDrawerContent({
         </TouchableWithoutFeedback>
         <TouchableNativeFeedback onPress={handleSignOut}>
           <Block >
-            <Text>
-              Salir
+            <Text size={15} h5 color={"white"}>
+              => Sign Out
           </Text>
           </Block>
         </TouchableNativeFeedback>

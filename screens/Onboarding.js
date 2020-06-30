@@ -37,7 +37,7 @@ class Onboarding extends React.Component {
       return []
     }
   }
-  logueo = async (user, password) => {
+  logueo = async (user, pass) => {
     if (!user) {
       throw new Error("User is needed")
     }
@@ -49,6 +49,8 @@ class Onboarding extends React.Component {
         'Authorization': 'Basic YWRtaW46QURNSU4='
       })
     })
+
+    console.log(response.status)
 
     if (response.status === 200) {
       const responseJson = await response.json()
@@ -96,7 +98,7 @@ class Onboarding extends React.Component {
                 Tu app de Pelis Favorita
               </Text>
             </Block>
-            <Block center>
+            <Block top center>
               <Input
                 right
                 color="black"
@@ -117,21 +119,23 @@ class Onboarding extends React.Component {
               <Button
                 shadowless
                 style={styles.button}
-                color='rgb(220, 0, 78)'
+                color='#514c4c'
                 onPress={this.handleOnPress}
               >
                 Log In
               </Button>
             </Block>
-            <Block style={{ marginVertical: 40 }}>
-              <Button
-                shadowless
-                style={styles.button}
-                color={theme.COLORS.TWITTER}
-                onPress={() => navigation.navigate('Register')}
-              >
-                Register
+            <Block>
+              <Block style={{ marginTop: 40 }}>
+                <Button
+                  shadowless
+                  style={styles.button}
+                  color={theme.COLORS.TWITTER}
+                  onPress={() => navigation.navigate('Register')}
+                >
+                  Register
               </Button>
+              </Block>
             </Block>
           </Block>
         </Block>
